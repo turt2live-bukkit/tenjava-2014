@@ -1,12 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.tenjava.entries.turt2live.t3</groupId>
-    <!-- you're welcome to change this -->
-    <artifactId>turt2live-t3</artifactId>
+    <groupId>com.turt2live.contest.tenjava</groupId>
+    <artifactId>SURVIVE</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ten.java 2014 July</name>
-    <description>Contest entry for ten.java 2014 July</description>
+    <name>ten.java 2014 continuation</name>
+    <description>Contest entry continuation for ten.java 2014 July</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,8 +44,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <!-- Per the rules at http://git.io/lAJgzQ, you're free to change
-                         "1.6" to "1.7" or "1.8" if you wish. This will not impact your score. -->
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
@@ -61,15 +58,6 @@
                     <include>*</include>
                 </includes>
             </resource>
-            <!-- Uncomment to include files (example is LICENSE file) from the project root
-            <resource>
-                <targetPath>.</targetPath>
-                <directory>${basedir}</directory>
-                <includes>
-                    <include>LICENSE</include>
-                </includes>
-            </resource>
-            -->
         </resources>
     </build>
 </project>
