@@ -1,4 +1,4 @@
-package com.tenjava.entries.turt2live.t3;
+package com.turt2live.contest.tenjava.survive;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;

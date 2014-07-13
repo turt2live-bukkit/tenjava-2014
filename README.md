@@ -10,6 +10,8 @@ This is a submission for the 2014 ten.java contest.
 - __MC Version:__ 1.7.9 (latest Bukkit beta)
 - __Stream URL:__ [Twitch](twitch.tv/turt2live)
 
+__NOTE__ This is a post-contest extension of the plugin. To see the original version, see the "contest-entry" branch.
+
 <!-- put chosen theme above -->
 
 ---------------------------------------

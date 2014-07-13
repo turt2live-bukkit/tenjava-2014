@@ -1,4 +1,4 @@
-package com.tenjava.entries.turt2live.t3;
+package com.turt2live.contest.tenjava.survive;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -68,7 +68,7 @@ public class GameListener implements Listener {
         armorWeights.put(Material.CHAINMAIL_BOOTS, 2.1);
     }
 
-    public GameListener(final TenJava plugin) {
+    public GameListener(final Survive plugin) {
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
@@ -183,12 +183,12 @@ public class GameListener implements Listener {
             else if (temperature > sweatingTemp) {
                 if (!player.hasMetadata("slow")) {
                     player.setWalkSpeed(player.getWalkSpeed() / 2);
-                    player.setMetadata("slow", new FixedMetadataValue(TenJava.getInstance(), "slow"));
+                    player.setMetadata("slow", new FixedMetadataValue(Survive.getInstance(), "slow"));
                 }
             }
 
             if (temperature < sweatingTemp && player.hasMetadata("slow")) {
-                player.removeMetadata("slow", TenJava.getInstance());
+                player.removeMetadata("slow", Survive.getInstance());
                 player.setWalkSpeed(player.getWalkSpeed() * 2);
             }
         }
@@ -230,7 +230,7 @@ public class GameListener implements Listener {
         player.sendMessage("Keep safe in tenjavria!");
 
         // Create scoreboard
-        Scoreboard scoreboard = TenJava.getInstance().getServer().getScoreboardManager().getNewScoreboard();
+        Scoreboard scoreboard = Survive.getInstance().getServer().getScoreboardManager().getNewScoreboard();
 
         Objective objective = scoreboard.registerNewObjective("dummy", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);

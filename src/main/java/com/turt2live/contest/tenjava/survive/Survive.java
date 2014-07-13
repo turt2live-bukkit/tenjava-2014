@@ -1,4 +1,4 @@
-package com.tenjava.entries.turt2live.t3;
+package com.turt2live.contest.tenjava.survive;
 
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
@@ -9,9 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author turt2live
  */
-public class TenJava extends JavaPlugin implements Listener {
+public class Survive extends JavaPlugin implements Listener {
 
-    private static TenJava instance;
+    private static Survive instance;
 
     @Override
     public void onEnable() {
@@ -38,7 +38,7 @@ public class TenJava extends JavaPlugin implements Listener {
      *
      * @return the current instance of the plugin.
      */
-    public static TenJava getInstance() {
+    public static Survive getInstance() {
         return instance;
     }
 

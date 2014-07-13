@@ -16,6 +16,10 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
+        <repository>
+            <id>turt2live-repo</id>
+            <url>http://repo.turt2live.com</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -38,6 +42,13 @@
     <build>
         <defaultGoal>clean package</defaultGoal>
         <finalName>${project.artifactId}</finalName>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-alpha-6</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -60,4 +71,11 @@
             </resource>
         </resources>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>turt2live-ftp</id>
+            <url>ftp://ftp.turt2live.com/public_html/maven2</url>
+        </repository>
+    </distributionManagement>
 </project>
