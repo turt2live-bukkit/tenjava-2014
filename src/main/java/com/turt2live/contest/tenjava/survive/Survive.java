@@ -1,7 +1,10 @@
 package com.turt2live.contest.tenjava.survive;
 
+import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -18,6 +21,9 @@ public class Survive extends JavaPlugin implements Listener {
         instance = this;
 
         getServer().getPluginManager().registerEvents(new GameListener(this), this);
+
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.FLINT_AND_STEEL)).addIngredient(4, Material.WOOD).addIngredient(1, Material.IRON_INGOT));
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.FLINT_AND_STEEL)).addIngredient(1, Material.COBBLESTONE).addIngredient(1, Material.IRON_INGOT));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.turt2live.contest.tenjava.survive;
 
 import com.google.common.collect.ImmutableList;
+import com.turt2live.contest.tenjava.survive.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -89,85 +90,27 @@ public class WorldGenerator extends ChunkGenerator {
             setRange(11, spawnY - 4, 8, 12, spawnY - 1, 11, Material.DIRT.getId(), blocks);
             setRange(8, spawnY - 4, 11, 11, spawnY - 1, 12, Material.DIRT.getId(), blocks);
         } else {
-            // 0.2% chance that a sphere of diamond will spawn
-            // 0.6% chance that a sphere of iron will spawn
-            // 1.0% chance that a sphere of stone will spawn
-            // 10% chance that a sphere of dirt will spawn
+            Structure structure = StructureRepository.getRandomStructure(random);
 
-            // Random blocks spawn first though
-            int minBlocks = world.getMaxHeight() / 4;
-            int numBlocks = random.nextInt(minBlocks) + minBlocks;
+            // TODO: Handle structures which are larger than a chunk
+            if (structure != null) {
+                // We need to choose a suitable Y location
+                int minY = 32;
+                int cy = random.nextInt(world.getMaxHeight() - minY - minY) + minY; // Keep within world bounds
 
-            for (int i = 0; i < numBlocks; i++) {
-                int rx = random.nextInt(16);
-                int ry = random.nextInt(world.getMaxHeight());
-                int rz = random.nextInt(16);
+                // For now we'll take the first 16 blocks in each row, if possible
+                int[][] data = structure.generate();
+                for (int level = 0; level < data.length; level++) {
+                    int[] zDim = data[level];
 
-                while (getBlock(rx, ry, rz, blocks) != 0) {
-                    rx = random.nextInt(16);
-                    ry = random.nextInt(world.getMaxHeight());
-                    rz = random.nextInt(16);
-                }
-
-                int choice = randomIds[random.nextInt(randomIds.length)];
-                if (random.nextDouble() < 0.4) choice = semiRareIds[random.nextInt(semiRareIds.length)];
-                if (random.nextDouble() < 0.15) choice = rareIds[random.nextInt(rareIds.length)];
-
-                setBlock(rx, ry, rz, choice, blocks);
-            }
-
-            // Now see if spheres need to be generated
-            int sphereId = 0;
-            double r = random.nextDouble();
-
-            if (r < 0.1) sphereId = Material.DIRT.getId();
-            if (r < 0.01) sphereId = Material.STONE.getId();
-            if (r < 0.006) sphereId = Material.IRON_BLOCK.getId();
-            if (r < 0.002) sphereId = Material.DIAMOND_BLOCK.getId();
-
-            if (sphereId != 0) {
-                int minSize = 3; // Radius
-                int maxSize = 7;
-                int size = random.nextInt(maxSize - minSize) + minSize;
-
-                int ry = random.nextInt(world.getMaxHeight() / 2) + world.getMaxHeight() / 4;
-
-                sphere(8, ry, 8, sphereId, size, blocks);
-            }
-        }
-
-        return blocks;
-    }
-
-    private boolean inRadius(int sx, int sy, int sz, int dx, int dy, int dz, int r) {
-        // s = center
-        // d = desired
-        int rsq = r * r;
-
-        int a = Math.abs(sx - dx);
-        int b = Math.abs(sy - dy);
-        int c = Math.abs(sz - dz);
-
-        int asq = a * a;
-        int bsq = b * b;
-        int csq = c * c;
-
-        return asq + bsq + csq < rsq;
-    }
-
-    private void sphere(int x, int y, int z, int material, int radius, byte[][] chunk) {
-        for (int cx = x - radius; cx < x + radius; cx++) {
-            for (int cy = y - radius; cy < y + radius; cy++) {
-                for (int cz = z - radius; cz < z + radius; cz++) {
-                    if (inRadius(x, y, z, cx, cy, cz, radius)) {
-                        int m = material;
-                        if (cx == x && cy == y && cz == z) m = Material.DIAMOND_BLOCK.getId();
-
-                        setBlock(cx, cy, cz, m, chunk);
+                    for (int xIndex = 0; xIndex < (zDim.length > 16 ? 16 : zDim.length); xIndex++) {
+                        setBlock(xIndex, cy + level, level, zDim[xIndex], blocks);
                     }
                 }
             }
         }
+
+        return blocks;
     }
 
     @Override
