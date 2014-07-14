@@ -81,6 +81,8 @@ public class GameListener implements Listener {
     }
 
     private void adjustTemperature(Player player) {
+        if (true) return; // Disable temperature for now
+
         int worldTemp;
 
         long time = player.getWorld().getTime();
@@ -252,6 +254,8 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (true) return; // disable movement count for now
+
         Player player = event.getPlayer();
 
         double distance = Math.abs(event.getFrom().distance(event.getTo())); // TODO: THIS IS BAD
@@ -259,5 +263,4 @@ public class GameListener implements Listener {
 
         distances.put(player.getUniqueId(), curr + distance);
     }
-
 }
