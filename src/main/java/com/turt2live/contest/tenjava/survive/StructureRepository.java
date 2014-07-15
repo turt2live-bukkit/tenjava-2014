@@ -17,6 +17,7 @@
 
 package com.turt2live.contest.tenjava.survive;
 
+import com.turt2live.contest.tenjava.survive.structure.FilledSphere;
 import com.turt2live.contest.tenjava.survive.structure.RawMaterialSphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
 import org.bukkit.Material;
@@ -35,6 +36,7 @@ public class StructureRepository {
     private static List<Structure> STRUCTURES = new ArrayList<Structure>();
 
     static {
+        // Regular resource spheres
         STRUCTURES.add(new RawMaterialSphere(Material.DIRT, 6, 6, 0.15, true));
         STRUCTURES.add(new RawMaterialSphere(Material.GRASS, 6, 6, 0.15, true));
         STRUCTURES.add(new RawMaterialSphere(Material.WOOD, 6, 6, 0.05, true));
@@ -42,6 +44,14 @@ public class StructureRepository {
         STRUCTURES.add(new RawMaterialSphere(Material.IRON_BLOCK, 0.05, true));
         STRUCTURES.add(new RawMaterialSphere(Material.DIAMOND_BLOCK, 0.02, true));
         STRUCTURES.add(new RawMaterialSphere(Material.STONE, 6, 6, 0.10, true));
+
+        // Filled spheres
+        STRUCTURES.add(new FilledSphere(Material.STONE, Material.STATIONARY_LAVA, 6, 6, 0.10, true));
+        STRUCTURES.add(new FilledSphere(Material.STONE, Material.STATIONARY_WATER, 6, 6, 0.10, true));
+        STRUCTURES.add(new FilledSphere(Material.DIRT, Material.STATIONARY_LAVA, 6, 6, 0.10, true));
+        STRUCTURES.add(new FilledSphere(Material.DIRT, Material.STATIONARY_WATER, 6, 6, 0.10, true));
+        STRUCTURES.add(new FilledSphere(Material.DIAMOND_BLOCK, Material.STATIONARY_LAVA, 6, 6, 0.10, true));
+        STRUCTURES.add(new FilledSphere(Material.DIAMOND_BLOCK, Material.STATIONARY_WATER, 6, 6, 0.10, true));
     }
 
     /**

@@ -3,7 +3,7 @@ package com.turt2live.contest.tenjava.survive;
 import com.google.common.collect.ImmutableList;
 import com.turt2live.contest.tenjava.survive.populator.SpawnPopulator;
 import com.turt2live.contest.tenjava.survive.populator.SphereSandPopulator;
-import com.turt2live.contest.tenjava.survive.structure.RawMaterialSphere;
+import com.turt2live.contest.tenjava.survive.structure.Sphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -106,7 +106,7 @@ public class WorldGenerator extends ChunkGenerator {
             }
 
             // Sphere generation
-            Structure structure = StructureRepository.getRandomStructure(random, RawMaterialSphere.class);
+            Structure structure = StructureRepository.getRandomStructure(random, Sphere.class);
 
             if (structure != null) {
                 // We need to choose a suitable Y location
