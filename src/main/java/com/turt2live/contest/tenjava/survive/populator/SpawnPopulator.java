@@ -1,4 +1,4 @@
-package com.turt2live.contest.tenjava.survive;
+package com.turt2live.contest.tenjava.survive.populator;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -12,11 +12,11 @@ import java.util.Random;
  *
  * @author turt2live
  */
-public class WorldPopulator extends BlockPopulator {
+public class SpawnPopulator extends BlockPopulator {
 
     private int spawnY;
 
-    WorldPopulator(int spawnY) {
+    public SpawnPopulator(int spawnY) {
         this.spawnY = spawnY;
     }
 

@@ -35,12 +35,13 @@ public class StructureRepository {
     private static List<Structure> STRUCTURES = new ArrayList<Structure>();
 
     static {
-        STRUCTURES.add(new RawMaterialSphere(Material.DIRT, 0.25));
-        STRUCTURES.add(new RawMaterialSphere(Material.WOOD, 0.05));
-        STRUCTURES.add(new RawMaterialSphere(Material.LOG, 0.05));
-        STRUCTURES.add(new RawMaterialSphere(Material.IRON_BLOCK, 0.05));
-        STRUCTURES.add(new RawMaterialSphere(Material.DIAMOND_BLOCK, 0.02));
-        STRUCTURES.add(new RawMaterialSphere(Material.STONE, 0.10));
+        STRUCTURES.add(new RawMaterialSphere(Material.DIRT, 6, 6, 0.15, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.GRASS, 6, 6, 0.15, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.WOOD, 6, 6, 0.05, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.LOG, 6, 6, 0.05, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.IRON_BLOCK, 0.05, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.DIAMOND_BLOCK, 0.02, true));
+        STRUCTURES.add(new RawMaterialSphere(Material.STONE, 6, 6, 0.10, true));
     }
 
     /**
@@ -50,22 +51,35 @@ public class StructureRepository {
      * <p/>This may return null if no structure was generated.
      *
      * @param random the random to use, cannot be null
+     * @param types  the types to generate from. If null/empty, all are assumed.
      *
      * @return the structure chosen, or null if none
      */
-    public static Structure getRandomStructure(Random random) {
-        if (random == null) throw new IllegalArgumentException("Must supply a random");
+    public static Structure getRandomStructure(Random random, Class<? extends Structure>... types) {
+        if (random == null) throw new IllegalArgumentException();
+
+        boolean all = types == null || types.length == 0;
 
         double choice = random.nextDouble();
         List<Structure> choices = new ArrayList<Structure>();
 
         for (Structure struct : STRUCTURES) {
-            if (struct.getPercentChance() >= 0 && struct.getPercentChance() <= 1 && choice <= struct.getPercentChance()) {
+            if (struct.getPercentChance() >= 0
+                    && struct.getPercentChance() <= 1
+                    && choice <= struct.getPercentChance()
+                    && (all || is(struct, types))) {
                 choices.add(struct);
             }
         }
 
         if (choices.size() > 0) return choices.get(random.nextInt(choices.size()));
         return null;
+    }
+
+    private static boolean is(Structure structure, Class[] types) {
+        for (Class<?> c : types) {
+            if (c.isInstance(structure)) return true;
+        }
+        return false;
     }
 }

@@ -1,6 +1,9 @@
 package com.turt2live.contest.tenjava.survive;
 
 import com.google.common.collect.ImmutableList;
+import com.turt2live.contest.tenjava.survive.populator.SpawnPopulator;
+import com.turt2live.contest.tenjava.survive.populator.SphereSandPopulator;
+import com.turt2live.contest.tenjava.survive.structure.RawMaterialSphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,20 +34,15 @@ public class WorldGenerator extends ChunkGenerator {
             Material.GLASS.getId(),
             Material.LOG.getId(),
             Material.WOOL.getId(),
-            Material.ICE.getId()
-    };
-    private int[] semiRareIds = new int[] {
+            Material.ICE.getId(),
             Material.IRON_BLOCK.getId(),
             Material.GOLD_BLOCK.getId(),
             Material.COAL_ORE.getId(),
             Material.IRON_ORE.getId(),
             Material.LAPIS_ORE.getId(),
             Material.REDSTONE_ORE.getId(),
-            Material.GLOWSTONE.getId(),
             Material.NETHERRACK.getId(),
-            Material.OBSIDIAN.getId()
-    };
-    private int[] rareIds = new int[] {
+            Material.OBSIDIAN.getId(),
             Material.DIAMOND_BLOCK.getId(),
             Material.COAL_BLOCK.getId(),
             Material.LAPIS_BLOCK.getId(),
@@ -54,17 +52,14 @@ public class WorldGenerator extends ChunkGenerator {
     };
 
     @Override
-    public List<BlockPopulator> getDefaultPopulators(World world) {
-        return ImmutableList.<BlockPopulator>of(new WorldPopulator(spawnY));
-    }
-
-    @Override
     public byte[][] generateBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
         // generates a chunk
         byte[][] blocks = new byte[world.getMaxHeight() / 16][];
         boolean spawnChunk = x == 0 && z == 0;
 
         if (spawnChunk) {
+            // TODO: SPAWN IS OFF CENTER
+
             // We'll generate an island for them
             setRange(8, spawnY - 4, 8, 11, spawnY - 3, 11, Material.STONE.getId(), blocks);
             setBlock(9, spawnY - 4, 9, Material.BEDROCK.getId(), blocks); // So they don't fall..
@@ -90,21 +85,42 @@ public class WorldGenerator extends ChunkGenerator {
             setRange(11, spawnY - 4, 8, 12, spawnY - 1, 11, Material.DIRT.getId(), blocks);
             setRange(8, spawnY - 4, 11, 11, spawnY - 1, 12, Material.DIRT.getId(), blocks);
         } else {
-            Structure structure = StructureRepository.getRandomStructure(random);
+            // Random scattered block generation (in packs of 4)
+            int minPacks = world.getMaxHeight() / 24;
+            int packs = random.nextInt(minPacks * 3) + minPacks;
 
-            // TODO: Handle structures which are larger than a chunk
+            for (int pack = 0; pack < packs; pack++) {
+                int rx = random.nextInt(15); // Keep it within the chunk...
+                int ry = random.nextInt(world.getMaxHeight() - 4) + 1;
+                int rz = random.nextInt(15); // Keep it within the chunk...
+
+                // Set the blocks
+                setBlock(rx, ry, rz, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx, ry, rz + 1, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx, ry + 1, rz, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx, ry + 1, rz + 1, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx + 1, ry, rz, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx + 1, ry, rz + 1, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx + 1, ry + 1, rz, randomIds[random.nextInt(randomIds.length)], blocks);
+                setBlock(rx + 1, ry + 1, rz + 1, randomIds[random.nextInt(randomIds.length)], blocks);
+            }
+
+            // Sphere generation
+            Structure structure = StructureRepository.getRandomStructure(random, RawMaterialSphere.class);
+
             if (structure != null) {
                 // We need to choose a suitable Y location
                 int minY = 32;
                 int cy = random.nextInt(world.getMaxHeight() - minY - minY) + minY; // Keep within world bounds
 
-                // For now we'll take the first 16 blocks in each row, if possible
-                int[][] data = structure.generate();
-                for (int level = 0; level < data.length; level++) {
-                    int[] zDim = data[level];
-
-                    for (int xIndex = 0; xIndex < (zDim.length > 16 ? 16 : zDim.length); xIndex++) {
-                        setBlock(xIndex, cy + level, level, zDim[xIndex], blocks);
+                int[][][] data = structure.generate();
+                for (int sy = 0; sy < data.length; sy++) {
+                    int[][] zData = data[sy];
+                    for (int sz = 0; sz < zData.length; sz++) {
+                        int[] xData = zData[sz];
+                        for (int sx = 0; sx < xData.length; sx++) {
+                            setBlock(sx, sy + cy, sz, xData[sx], blocks);
+                        }
                     }
                 }
             }
@@ -144,5 +160,15 @@ public class WorldGenerator extends ChunkGenerator {
             return (byte) 0;
         }
         return chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x];
+    }
+
+    @Override
+    public List<BlockPopulator> getDefaultPopulators(World world) {
+        return ImmutableList.<BlockPopulator>of(
+                new SpawnPopulator(spawnY),
+
+                // Sphere populators
+                new SphereSandPopulator(0.10)
+        );
     }
 }

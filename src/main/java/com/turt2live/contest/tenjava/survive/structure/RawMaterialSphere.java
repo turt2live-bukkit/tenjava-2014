@@ -29,6 +29,7 @@ public class RawMaterialSphere extends Sphere {
     protected int materialId;
     protected int minRadius, maxRadius;
     protected double percentChance;
+    protected boolean withDiamond = false;
 
     /**
      * Creates a new raw material sphere
@@ -37,8 +38,9 @@ public class RawMaterialSphere extends Sphere {
      * @param minRadius     the minimum radius to use, cannot be 0 or negative
      * @param maxRadius     the maximum radius to use, cannot be smaller than the minimum
      * @param percentChance the percentage chance to spawn this sphere, must be between 0 and 1 inclusive
+     * @param withDiamond   if true, a diamond block will be spawned in the middle of the sphere
      */
-    public RawMaterialSphere(Material material, int minRadius, int maxRadius, double percentChance) {
+    public RawMaterialSphere(Material material, int minRadius, int maxRadius, double percentChance, boolean withDiamond) {
         if (material == null)
             throw new IllegalArgumentException("A material must be supplied");
         if (minRadius <= 0)
@@ -52,6 +54,16 @@ public class RawMaterialSphere extends Sphere {
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
         this.percentChance = percentChance;
+        this.withDiamond = withDiamond;
+    }
+
+    /**
+     * Uses withDiamond=false
+     *
+     * @see #RawMaterialSphere(org.bukkit.Material, int, int, double, boolean)
+     */
+    public RawMaterialSphere(Material material, int minRadius, int maxRadius, double percentChance) {
+        this(material, minRadius, maxRadius, percentChance, false);
     }
 
     /**
@@ -63,21 +75,33 @@ public class RawMaterialSphere extends Sphere {
         this(material, 3, 7, percentChance);
     }
 
+    /**
+     * Uses a radius of 3 -> 7
+     *
+     * @see #RawMaterialSphere(org.bukkit.Material, int, int, double, boolean)
+     */
+    public RawMaterialSphere(Material material, double percentChance, boolean withDiamond) {
+        this(material, 3, 7, percentChance, withDiamond);
+    }
+
     @Override
     public double getPercentChance() {
         return percentChance;
     }
 
     @Override
-    public int[][] generate() {
-        int radius = random.nextInt(maxRadius - minRadius) + minRadius;
+    public int[][][] generate() {
+        int radius = maxRadius == minRadius ? maxRadius : random.nextInt(maxRadius - minRadius) + minRadius;
 
-        int[][] template = generateTemplate(radius);
-        if (materialId == 1) return template; // Save SOME time
+        int[][][] template = generateTemplate(radius);
 
-        for (int[] z : template) {
-            for (int x = 0; x < z.length; x++) {
-                if (z[x] == 1) z[x] = materialId;
+        for (int y = 0; y < template.length; y++) {
+            for (int z = 0; z < template[y].length; z++) {
+                for (int x = 0; x < template[y][z].length; x++) {
+                    if (template[y][z][x] == 1) template[y][z][x] = materialId;
+                    if (withDiamond && y == 8 && z == 8 && x == 8)
+                        template[y][z][x] = Material.DIAMOND_BLOCK.getId();
+                }
             }
         }
 

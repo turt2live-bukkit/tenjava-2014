@@ -40,15 +40,17 @@ public interface Structure {
      * is 1 for visual purposes only.
      * <pre>
      * {
-     *  {00100},
-     *  {01010},
-     *  {10001}
-     * },
-     * // Second layer is a mirror of the first layer
-     * {
-     *  {00100},
-     *  {01010},
-     *  {10001}
+     *   {
+     *    {00100},
+     *    {01010},
+     *    {10001}
+     *   },
+     *   // Second layer is a mirror of the first layer
+     *   {
+     *    {00100},
+     *    {01010},
+     *    {10001}
+     *   }
      * }
      * </pre>
      * <p/>
@@ -57,5 +59,5 @@ public interface Structure {
      *
      * @return the generated structure
      */
-    public int[][] generate();
+    public int[][][] generate();
 }

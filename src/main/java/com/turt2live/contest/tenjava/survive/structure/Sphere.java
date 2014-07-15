@@ -39,26 +39,22 @@ public abstract class Sphere implements Structure {
      *
      * @return the generated array
      */
-    protected int[][] generateTemplate(int radius) {
-        int[][] template = new int[radius * 2][radius * 2];
+    protected int[][][] generateTemplate(int radius) {
+        int[][][] template = new int[16][16][16];
 
-        // For sanity
-        int cx = radius;
-        int cy = radius;
-        int cz = radius;
+        // For sanity (spheres spawn in the center of the chunk)
+        int cx = 8;
+        int cy = 8;
+        int cz = 8;
 
-        for (int y = 0; y < radius * 2; y++) {
-            for (int x = 0; x < radius * 2; x++) {
-                for (int z = 0; z < radius * 2; z++) {
-                    int[] zDim;
-
-                    // Pre or repopulate the array
-                    if (template[y].length == 0) template[y] = new int[radius * 2];
-                    zDim = template[y];
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    int[] xDim = template[y][z];
 
                     // Test for circle
                     if (inRadius(cx, cy, cz, x, y, z, radius)) {
-                        zDim[x] = 1;
+                        xDim[x] = 1;
                     }
                 }
             }
