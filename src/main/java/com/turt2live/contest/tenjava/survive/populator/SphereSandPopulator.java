@@ -22,6 +22,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 
 import java.util.Random;
 
@@ -46,32 +47,32 @@ public class SphereSandPopulator extends SpherePopulator {
         // We're going to create a level platform first (of sand...)
         capSphere(Material.SAND, 0, center, radius);
 
-        Location platformStart = center.add(0, radius + 1, 0);
+        Location platformStart = center.add(0, radius + 2, 0);
 
         for (int z = -radius; z < radius; z++) {
             for (int x = -radius; x < radius; x++) {
                 if (random.nextDouble() < 0.05) {
-                    Location cactiLocation = platformStart.clone().add(x, 0, z);
+                    Block cacti = platformStart.clone().add(x, 0, z).getBlock();
 
                     // We'll build a cacti here
                     int height = random.nextInt(6) + 2; // 2 - 8 high
 
                     for (int h = 0; h < height; h++) {
                         // Check safety of position
-                        Block b1 = cactiLocation.clone().add(1, 0, 0).getBlock();
-                        Block b2 = cactiLocation.clone().add(-1, 0, 0).getBlock();
-                        Block b3 = cactiLocation.clone().add(0, 0, 1).getBlock();
-                        Block b4 = cactiLocation.clone().add(0, 0, -1).getBlock();
+                        Block b1 = cacti.getRelative(BlockFace.NORTH);
+                        Block b2 = cacti.getRelative(BlockFace.SOUTH);
+                        Block b3 = cacti.getRelative(BlockFace.EAST);
+                        Block b4 = cacti.getRelative(BlockFace.WEST);
 
-                        Block b5 = cactiLocation.clone().add(0, -1, 0).getBlock();
+                        Block b5 = cacti.getRelative(BlockFace.DOWN);
                         if (b5.getType() != Material.SAND) break; // Unsafe
 
                         if (!all(Material.AIR, b1, b2, b3, b4)) {
                             break;
                         }
 
-                        cactiLocation.getBlock().setType(Material.CACTUS);
-                        cactiLocation = cactiLocation.add(0, 1, 0);
+                        cacti.setType(Material.CACTUS);
+                        cacti = cacti.getRelative(BlockFace.UP);
                     }
                 }
             }

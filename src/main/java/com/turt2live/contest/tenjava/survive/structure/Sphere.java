@@ -17,53 +17,12 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
-import org.bukkit.Material;
-
-import java.util.Random;
-
 /**
  * Represents a sphere
  *
  * @author turt2live
  */
 public abstract class Sphere implements Structure {
-
-    /**
-     * A random object to be used
-     */
-    protected static Random random = new Random();
-
-    /**
-     * Generates a template sphere to use. The array will contain a AIR for "use this" and
-     * a null for "should be nothing".
-     *
-     * @param radius the radius of the sphere
-     *
-     * @return the generated array
-     */
-    protected Material[][][] generateTemplate(int radius) {
-        Material[][][] template = new Material[radius * 2][radius * 2][radius * 2];
-
-        // For sanity
-        int cx = radius;
-        int cy = radius;
-        int cz = radius;
-
-        for (int y = 0; y < template.length; y++) {
-            for (int z = 0; z < template[y].length; z++) {
-                for (int x = 0; x < template[y][z].length; x++) {
-                    Material[] xDim = template[y][z];
-
-                    // Test for circle
-                    if (inRadius(cx, cy, cz, x, y, z, radius)) {
-                        xDim[x] = Material.AIR;
-                    }
-                }
-            }
-        }
-
-        return template;
-    }
 
     /**
      * Determines whether or not a coordinate is in a specified radius
@@ -83,9 +42,13 @@ public abstract class Sphere implements Structure {
         // d = desired
         int rsq = r * r;
 
-        int a = Math.abs(sx - dx);
-        int b = Math.abs(sy - dy);
-        int c = Math.abs(sz - dz);
+        int a = sx - dx;
+        int b = sy - dy;
+        int c = sz - dz;
+
+        a = a < 0 ? -a : a;
+        b = b < 0 ? -b : b;
+        c = c < 0 ? -c : c;
 
         int asq = a * a;
         int bsq = b * b;
@@ -93,5 +56,4 @@ public abstract class Sphere implements Structure {
 
         return asq + bsq + csq < rsq;
     }
-
 }

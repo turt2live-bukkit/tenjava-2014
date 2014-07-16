@@ -17,7 +17,12 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
-import org.bukkit.Material;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 /**
  * Represents a single large structure in the world
@@ -36,30 +41,15 @@ public interface Structure {
     public double getPercentChance();
 
     /**
-     * Generates an array representation of block IDs for this structure. The array is
-     * structured to be [y][z][x]. Therefore the following array layout could be used
-     * to generate a simple arrow which points north (2 layers). The example block ID
-     * is 1 for visual purposes only.
-     * <pre>
-     * {
-     *   {
-     *    {00100},
-     *    {01010},
-     *    {10001}
-     *   },
-     *   // Second layer is a mirror of the first layer
-     *   {
-     *    {00100},
-     *    {01010},
-     *    {10001}
-     *   }
-     * }
-     * </pre>
-     * <p/>
-     * Note that as the Z increases, you approach closer to south. As X increases you
-     * approach closer to east. As Y increases you approach closer to the sky.
+     * Generates this structure at the specified location. All arguments are assumed
+     * to be non-null.
      *
-     * @return the generated structure
+     * @param world  the world to generate this structure in
+     * @param chunk  the applicable chunk
+     * @param random the applicable random
+     * @param center the center location to build this structure in
+     *
+     * @return the size of the generated object (where axis = dimension size)
      */
-    public Material[][][] generate();
+    public abstract Vector generate(World world, Chunk chunk, Random random, Location center);
 }

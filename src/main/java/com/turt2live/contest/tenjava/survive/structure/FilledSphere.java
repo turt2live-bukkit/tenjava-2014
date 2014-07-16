@@ -17,7 +17,13 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 /**
  * Represents a sphere that is filled with another material
@@ -94,32 +100,31 @@ public class FilledSphere extends Sphere {
     }
 
     @Override
-    public Material[][][] generate() {
+    public Vector generate(World world, Chunk chunk, Random random, Location center) {
         int radius = maxRadius == minRadius ? maxRadius : random.nextInt(maxRadius - minRadius) + minRadius;
 
-        Material[][][] template = generateTemplate(radius);
+        int cx = center.getBlockX();
+        int cy = center.getBlockY();
+        int cz = center.getBlockZ();
 
-        Material[][][] inner = generateTemplate(radius - 1);
-        Material[][][] innerTemplate = new Material[radius * 2][radius * 2][radius * 2];
+        for (int y = -radius; y < radius; y++) {
+            for (int z = -radius; z < radius; z++) {
+                for (int x = -radius; x < radius; x++) {
+                    int bx = x + cx;
+                    int by = y + cy;
+                    int bz = z + cz;
 
-        // Copy inner to template (which is 1 larger)
-        for (int y = 1; y < inner.length; y++) {
-            for (int z = 1; z < inner[y - 1].length; z++) {
-                System.arraycopy(inner[y - 1][z - 1], 0, innerTemplate[y][z], 1, inner[y - 1][z - 1].length - 1);
-            }
-        }
+                    if (inRadius(cx, cy, cz, bx, by, bz, radius)) {
+                        Material m = inRadius(cx, cy, cz, bx, by, bz, radius - 1) ? fill : shell;
+                        if (withDiamond && y == 0 && z == 0 && x == 0)
+                            m = Material.DIAMOND_BLOCK;
 
-        // Start setting blocks
-        for (int y = 0; y < template.length; y++) {
-            for (int z = 0; z < template[y].length; z++) {
-                for (int x = 0; x < template[y][z].length; x++) {
-                    if (template[y][z][x] != null) template[y][z][x] = innerTemplate[y][z][x] != null ? fill : shell;
-                    if (withDiamond && y == radius / 2 && z == radius / 2 && x == radius / 2)
-                        template[y][z][x] = Material.DIAMOND_BLOCK;
+                        world.getBlockAt(bx, by, bz).setType(m);
+                    }
                 }
             }
         }
 
-        return template;
+        return new Vector(radius * 2, radius * 2, radius * 2);
     }
 }

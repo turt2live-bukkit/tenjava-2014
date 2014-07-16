@@ -22,9 +22,9 @@ import com.turt2live.contest.tenjava.survive.structure.Sphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,34 +55,12 @@ public class SphereIncludePopulator extends BlockPopulator {
             // We need to choose a suitable Y location
             int minY = 32;
             int cy = random.nextInt(world.getMaxHeight() - minY - minY) + minY; // Keep within world bounds
-
-            Material[][][] data = structure.generate();
-
-            int radius = data.length / 2;
             int cx = random.nextInt(16);
             int cz = random.nextInt(16);
-
             Location center = new Location(world, chunk.getX() * 16 + cx, cy, chunk.getZ() * 16 + cz);
 
-            for (int sy = 0; sy < data.length; sy++) {
-                Material[][] zData = data[sy];
-                for (int sz = 0; sz < zData.length; sz++) {
-                    Material[] xData = zData[sz];
-                    for (int sx = 0; sx < xData.length; sx++) {
-                        if (xData[sx] == null) continue;
-
-                        int x = sx - radius;
-                        int y = sy - radius;
-                        int z = sz - radius;
-
-                        Location l = center.clone().add(x, y, z);
-                        Chunk c = l.getChunk();
-                        if (!c.isLoaded()) c.load();
-
-                        l.getBlock().setType(xData[sx]);
-                    }
-                }
-            }
+            Vector dimensions = structure.generate(world, chunk, random, center);
+            int radius = dimensions.getBlockX() / 2;
 
             for (SpherePopulator populator : populatorList) {
                 populator.populate(world, random, chunk, center, radius);
