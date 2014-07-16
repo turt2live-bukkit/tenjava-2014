@@ -103,6 +103,27 @@ public class RawMaterialSphere extends Sphere {
         int cy = center.getBlockY();
         int cz = center.getBlockZ();
 
+        /*
+        for (int y = 0; y < radius; y++) {
+            for (int z = 0; z < radius / 2; z++) {
+                for (int x = 0; x < radius / 2; x++) {
+                    Location t1 = center.clone().add(x, y, z);
+                    Location t2 = t1.clone().add(-radius, 0, 0);
+                    Location t3 = t1.clone().add(-radius, 0, -radius);
+                    Location t4 = t1.clone().add(0, 0, -radius);
+
+                    Material m = materialId;
+                    if (withDiamond && y == 0 && z == 0 && x == 0)
+                        m = Material.DIAMOND_BLOCK;
+
+                    t1.getBlock().setType(m);
+                    t2.getBlock().setType(m);
+                    t3.getBlock().setType(m);
+                    t4.getBlock().setType(m);
+                }
+            }
+        }*/
+
         for (int y = -radius; y < radius; y++) {
             for (int z = -radius; z < radius; z++) {
                 for (int x = -radius; x < radius; x++) {
