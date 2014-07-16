@@ -26,7 +26,7 @@ import org.bukkit.Material;
  */
 public class FilledSphere extends Sphere {
 
-    protected int shell, fill;
+    protected Material shell, fill;
     protected int minRadius, maxRadius;
     protected double percentChance;
     protected boolean withDiamond = false;
@@ -56,8 +56,8 @@ public class FilledSphere extends Sphere {
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
         this.percentChance = percentChance;
-        this.shell = shell.getId();
-        this.fill = filler.getId();
+        this.shell = shell;
+        this.fill = filler;
         this.withDiamond = withDiamond;
     }
 
@@ -94,18 +94,28 @@ public class FilledSphere extends Sphere {
     }
 
     @Override
-    public int[][][] generate() {
+    public Material[][][] generate() {
         int radius = maxRadius == minRadius ? maxRadius : random.nextInt(maxRadius - minRadius) + minRadius;
 
-        int[][][] template = generateTemplate(radius);
-        int[][][] innerTemplate = generateTemplate(radius - 1);
+        Material[][][] template = generateTemplate(radius);
 
+        Material[][][] inner = generateTemplate(radius - 1);
+        Material[][][] innerTemplate = new Material[radius * 2][radius * 2][radius * 2];
+
+        // Copy inner to template (which is 1 larger)
+        for (int y = 1; y < inner.length; y++) {
+            for (int z = 1; z < inner[y - 1].length; z++) {
+                System.arraycopy(inner[y - 1][z - 1], 0, innerTemplate[y][z], 1, inner[y - 1][z - 1].length - 1);
+            }
+        }
+
+        // Start setting blocks
         for (int y = 0; y < template.length; y++) {
             for (int z = 0; z < template[y].length; z++) {
                 for (int x = 0; x < template[y][z].length; x++) {
-                    if (template[y][z][x] == 1) template[y][z][x] = innerTemplate[y][z][x] == 1 ? fill : shell;
-                    if (withDiamond && y == 8 && z == 8 && x == 8)
-                        template[y][z][x] = Material.DIAMOND_BLOCK.getId();
+                    if (template[y][z][x] != null) template[y][z][x] = innerTemplate[y][z][x] != null ? fill : shell;
+                    if (withDiamond && y == radius / 2 && z == radius / 2 && x == radius / 2)
+                        template[y][z][x] = Material.DIAMOND_BLOCK;
                 }
             }
         }

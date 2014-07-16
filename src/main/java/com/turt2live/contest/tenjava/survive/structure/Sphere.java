@@ -17,6 +17,8 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
+import org.bukkit.Material;
+
 import java.util.Random;
 
 /**
@@ -32,29 +34,29 @@ public abstract class Sphere implements Structure {
     protected static Random random = new Random();
 
     /**
-     * Generates a template sphere to use. The array will contain a 1 for "use this" and
-     * a 0 for "should be nothing".
+     * Generates a template sphere to use. The array will contain a AIR for "use this" and
+     * a null for "should be nothing".
      *
      * @param radius the radius of the sphere
      *
      * @return the generated array
      */
-    protected int[][][] generateTemplate(int radius) {
-        int[][][] template = new int[16][16][16];
+    protected Material[][][] generateTemplate(int radius) {
+        Material[][][] template = new Material[radius * 2][radius * 2][radius * 2];
 
-        // For sanity (spheres spawn in the center of the chunk)
-        int cx = 8;
-        int cy = 8;
-        int cz = 8;
+        // For sanity
+        int cx = radius;
+        int cy = radius;
+        int cz = radius;
 
-        for (int y = 0; y < 16; y++) {
-            for (int x = 0; x < 16; x++) {
-                for (int z = 0; z < 16; z++) {
-                    int[] xDim = template[y][z];
+        for (int y = 0; y < template.length; y++) {
+            for (int z = 0; z < template[y].length; z++) {
+                for (int x = 0; x < template[y][z].length; x++) {
+                    Material[] xDim = template[y][z];
 
                     // Test for circle
                     if (inRadius(cx, cy, cz, x, y, z, radius)) {
-                        xDim[x] = 1;
+                        xDim[x] = Material.AIR;
                     }
                 }
             }

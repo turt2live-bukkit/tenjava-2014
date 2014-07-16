@@ -26,7 +26,7 @@ import org.bukkit.Material;
  */
 public class RawMaterialSphere extends Sphere {
 
-    protected int materialId;
+    protected Material materialId;
     protected int minRadius, maxRadius;
     protected double percentChance;
     protected boolean withDiamond = false;
@@ -50,7 +50,7 @@ public class RawMaterialSphere extends Sphere {
         if (percentChance < 0 || percentChance > 1)
             throw new IllegalArgumentException("The percentage chance must be within 0 and 1 inclusive");
 
-        this.materialId = material.getId();
+        this.materialId = material;
         this.minRadius = minRadius;
         this.maxRadius = maxRadius;
         this.percentChance = percentChance;
@@ -90,17 +90,17 @@ public class RawMaterialSphere extends Sphere {
     }
 
     @Override
-    public int[][][] generate() {
+    public Material[][][] generate() {
         int radius = maxRadius == minRadius ? maxRadius : random.nextInt(maxRadius - minRadius) + minRadius;
 
-        int[][][] template = generateTemplate(radius);
+        Material[][][] template = generateTemplate(radius);
 
         for (int y = 0; y < template.length; y++) {
             for (int z = 0; z < template[y].length; z++) {
                 for (int x = 0; x < template[y][z].length; x++) {
-                    if (template[y][z][x] == 1) template[y][z][x] = materialId;
-                    if (withDiamond && y == 8 && z == 8 && x == 8)
-                        template[y][z][x] = Material.DIAMOND_BLOCK.getId();
+                    if (template[y][z][x] != null) template[y][z][x] = materialId;
+                    if (withDiamond && y == radius / 2 && z == radius / 2 && x == radius / 2)
+                        template[y][z][x] = Material.DIAMOND_BLOCK;
                 }
             }
         }

@@ -2,9 +2,7 @@ package com.turt2live.contest.tenjava.survive;
 
 import com.google.common.collect.ImmutableList;
 import com.turt2live.contest.tenjava.survive.populator.SpawnPopulator;
-import com.turt2live.contest.tenjava.survive.populator.SphereSandPopulator;
-import com.turt2live.contest.tenjava.survive.structure.Sphere;
-import com.turt2live.contest.tenjava.survive.structure.Structure;
+import com.turt2live.contest.tenjava.survive.populator.SphereIncludePopulator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -104,26 +102,6 @@ public class WorldGenerator extends ChunkGenerator {
                 setBlock(rx + 1, ry + 1, rz, randomIds[random.nextInt(randomIds.length)], blocks);
                 setBlock(rx + 1, ry + 1, rz + 1, randomIds[random.nextInt(randomIds.length)], blocks);
             }
-
-            // Sphere generation
-            Structure structure = StructureRepository.getRandomStructure(random, Sphere.class);
-
-            if (structure != null) {
-                // We need to choose a suitable Y location
-                int minY = 32;
-                int cy = random.nextInt(world.getMaxHeight() - minY - minY) + minY; // Keep within world bounds
-
-                int[][][] data = structure.generate();
-                for (int sy = 0; sy < data.length; sy++) {
-                    int[][] zData = data[sy];
-                    for (int sz = 0; sz < zData.length; sz++) {
-                        int[] xData = zData[sz];
-                        for (int sx = 0; sx < xData.length; sx++) {
-                            setBlock(sx, sy + cy, sz, xData[sx], blocks);
-                        }
-                    }
-                }
-            }
         }
 
         return blocks;
@@ -166,9 +144,7 @@ public class WorldGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return ImmutableList.<BlockPopulator>of(
                 new SpawnPopulator(spawnY),
-
-                // Sphere populators
-                new SphereSandPopulator(0.10)
+                new SphereIncludePopulator()
         );
     }
 }

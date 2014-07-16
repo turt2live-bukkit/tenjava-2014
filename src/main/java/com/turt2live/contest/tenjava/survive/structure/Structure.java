@@ -17,6 +17,8 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
+import org.bukkit.Material;
+
 /**
  * Represents a single large structure in the world
  *
@@ -59,5 +61,5 @@ public interface Structure {
      *
      * @return the generated structure
      */
-    public int[][][] generate();
+    public Material[][][] generate();
 }

@@ -23,7 +23,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Random;
@@ -33,7 +32,7 @@ import java.util.Random;
  *
  * @author turt2live
  */
-public abstract class SpherePopulator extends BlockPopulator {
+public abstract class SpherePopulator {
 
     private static final String SPHERE_POPULATED_META = "SURVIVE.sphere.populated";
 
@@ -45,14 +44,23 @@ public abstract class SpherePopulator extends BlockPopulator {
         this.chance = chance;
     }
 
-    @Override
-    public final void populate(World world, Random random, Chunk chunk) {
-        Location center = getSphereCenter(chunk);
+    /**
+     * Populates this chunk with various extra sphere details
+     *
+     * @param world  the applicable world
+     * @param random the applicable random
+     * @param chunk  the applicable chunk
+     * @param center the sphere's center
+     * @param radius the radius of the sphere, must be >= 1
+     */
+    public final void populate(World world, Random random, Chunk chunk, Location center, int radius) {
+        if (radius < 1) throw new IllegalArgumentException("Radius too small");
+
         if (center != null && random.nextDouble() < chance) {
             Block bcenter = center.getBlock();
 
             if (!bcenter.hasMetadata(SPHERE_POPULATED_META)) {
-                if (populate(world, chunk, random, center, getSphereRadius(center)))
+                if (populate(world, chunk, random, center, radius))
                     bcenter.setMetadata(SPHERE_POPULATED_META, new FixedMetadataValue(Survive.getInstance(), true));
             }
         }
@@ -70,61 +78,6 @@ public abstract class SpherePopulator extends BlockPopulator {
      * @return true if the sphere was populated, false otherwise
      */
     protected abstract boolean populate(World world, Chunk chunk, Random random, Location center, int radius);
-
-    /**
-     * Gets the center of the sphere
-     *
-     * @param chunk the chunk to look inside, assumed to be not null
-     *
-     * @return the location of a sphere in this chunk, or null if not found
-     */
-    protected Location getSphereCenter(Chunk chunk) {
-        int cx = 8;
-        int cz = 8;
-        int streak = 0;
-
-        for (int y = 0; y < chunk.getWorld().getMaxHeight(); y++) {
-            Block block = chunk.getBlock(cx, y, cz);
-            if (block.getType() == Material.AIR) {
-                if (streak >= 3) {
-                    if (getSphereRadius(block.getLocation().subtract(0, (streak / 2) + 1, 0)) > 0) {
-                        return block.getLocation().subtract(0, (streak / 2) + 1, 0);
-                    }
-                }
-                streak = 0;
-            } else streak++;
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the radius of the sphere
-     *
-     * @param location the center
-     *
-     * @return the radius of the sphere, or 0 if no sphere or null location
-     */
-    protected int getSphereRadius(Location location) {
-        if (location == null) return 0;
-
-        for (int i = 0; i < 8; i++) {
-            Block b1 = location.clone().add(i, 0, 0).getBlock();
-            Block b2 = location.clone().add(-i, 0, 0).getBlock();
-            Block b3 = location.clone().add(0, i, 0).getBlock();
-            Block b4 = location.clone().add(0, -i, 0).getBlock();
-            Block b5 = location.clone().add(0, 0, i).getBlock();
-            Block b6 = location.clone().add(0, 0, -i).getBlock();
-
-            if (!allNot(Material.AIR, b1, b2, b3, b4, b5, b6)) {
-                if (all(Material.AIR, b1, b2, b3, b4, b5, b6)) {
-                    return i - 1;
-                } else return 0; // Not a sphere
-            }
-        }
-
-        return 0;
-    }
 
     /**
      * Caps a sphere with a material, squaring the top off. This will always add at least
