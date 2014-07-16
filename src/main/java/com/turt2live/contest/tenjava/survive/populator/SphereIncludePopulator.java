@@ -41,8 +41,8 @@ public class SphereIncludePopulator extends BlockPopulator {
     private List<SpherePopulator> populatorList = new ArrayList<SpherePopulator>();
 
     public SphereIncludePopulator() {
-        populatorList.add(new SphereSandPopulator(0.05));
-        populatorList.add(new SphereAnimalPopulator(0.50));
+        populatorList.add(new SphereSandPopulator(0.10)); // 10% of all spheres
+        populatorList.add(new SphereAnimalPopulator(0.50)); // 50% of grass spheres
     }
 
     @Override
