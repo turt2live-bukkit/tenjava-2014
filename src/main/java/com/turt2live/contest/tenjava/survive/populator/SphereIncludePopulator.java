@@ -42,6 +42,7 @@ public class SphereIncludePopulator extends BlockPopulator {
 
     public SphereIncludePopulator() {
         populatorList.add(new SphereSandPopulator(0.05));
+        populatorList.add(new SphereAnimalPopulator(0.50));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class SphereSandPopulator extends SpherePopulator {
         // We're going to create a level platform first (of sand...)
         capSphere(Material.SAND, 0, center, radius);
 
-        Location platformStart = center.add(0, radius + 2, 0);
+        Location platformStart = center.add(0, radius + 1, 0);
 
         for (int z = -radius; z < radius; z++) {
             for (int x = -radius; x < radius; x++) {
@@ -65,7 +65,7 @@ public class SphereSandPopulator extends SpherePopulator {
                         Block b4 = cacti.getRelative(BlockFace.WEST);
 
                         Block b5 = cacti.getRelative(BlockFace.DOWN);
-                        if (b5.getType() != Material.SAND) break; // Unsafe
+                        if (b5.getType() != Material.SAND && b5.getType() != Material.CACTUS) break; // Unsafe
 
                         if (!all(Material.AIR, b1, b2, b3, b4)) {
                             break;
