@@ -17,8 +17,8 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
+import com.turt2live.contest.tenjava.survive.util.Point3D;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
 
@@ -51,5 +51,5 @@ public interface Structure {
      *
      * @return the size of the generated object (where axis = dimension size)
      */
-    public abstract Vector generate(World world, Chunk chunk, Random random, Location center);
+    public abstract Vector generate(World world, Chunk chunk, Random random, Point3D center);
 }

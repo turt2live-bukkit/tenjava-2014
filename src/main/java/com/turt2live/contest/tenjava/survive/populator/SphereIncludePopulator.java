@@ -20,6 +20,7 @@ package com.turt2live.contest.tenjava.survive.populator;
 import com.turt2live.contest.tenjava.survive.StructureRepository;
 import com.turt2live.contest.tenjava.survive.structure.Sphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
+import com.turt2live.contest.tenjava.survive.util.Point3D;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -60,7 +61,7 @@ public class SphereIncludePopulator extends BlockPopulator {
             int cz = random.nextInt(16);
             Location center = new Location(world, chunk.getX() * 16 + cx, cy, chunk.getZ() * 16 + cz);
 
-            Vector dimensions = structure.generate(world, chunk, random, center);
+            Vector dimensions = structure.generate(world, chunk, random, new Point3D(center.getBlockX(), center.getBlockY(), center.getBlockZ()));
             int radius = dimensions.getBlockX() / 2;
 
             for (SpherePopulator populator : populatorList) {

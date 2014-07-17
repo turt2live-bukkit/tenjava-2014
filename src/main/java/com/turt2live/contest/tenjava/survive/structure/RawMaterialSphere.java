@@ -17,13 +17,9 @@
 
 package com.turt2live.contest.tenjava.survive.structure;
 
-import org.bukkit.Chunk;
-import org.bukkit.Location;
+import com.turt2live.contest.tenjava.survive.util.Point3D;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.util.Vector;
-
-import java.util.Random;
 
 /**
  * Represents a sphere which is of a raw material
@@ -33,8 +29,6 @@ import java.util.Random;
 public class RawMaterialSphere extends Sphere {
 
     protected Material materialId;
-    protected int minRadius, maxRadius;
-    protected double percentChance;
     protected boolean withDiamond = false;
 
     /**
@@ -47,19 +41,13 @@ public class RawMaterialSphere extends Sphere {
      * @param withDiamond   if true, a diamond block will be spawned in the middle of the sphere
      */
     public RawMaterialSphere(Material material, int minRadius, int maxRadius, double percentChance, boolean withDiamond) {
+        super(minRadius, maxRadius);
+        setPercentChance(percentChance);
+
         if (material == null)
             throw new IllegalArgumentException("A material must be supplied");
-        if (minRadius <= 0)
-            throw new IllegalArgumentException("Minimum radius must be >=1");
-        if (maxRadius < minRadius)
-            throw new IllegalArgumentException("Maximum radius must be larger than or equal to the minimum radius");
-        if (percentChance < 0 || percentChance > 1)
-            throw new IllegalArgumentException("The percentage chance must be within 0 and 1 inclusive");
 
         this.materialId = material;
-        this.minRadius = minRadius;
-        this.maxRadius = maxRadius;
-        this.percentChance = percentChance;
         this.withDiamond = withDiamond;
     }
 
@@ -91,57 +79,10 @@ public class RawMaterialSphere extends Sphere {
     }
 
     @Override
-    public double getPercentChance() {
-        return percentChance;
-    }
+    protected void setBlock(Point3D block, Point3D center, int radius, boolean isCenter, World world) {
+        Material material = materialId;
+        if (isCenter && withDiamond) material = Material.DIAMOND_BLOCK;
 
-    @Override
-    public Vector generate(World world, Chunk chunk, Random random, Location center) {
-        int radius = maxRadius == minRadius ? maxRadius : random.nextInt(maxRadius - minRadius) + minRadius;
-
-        int cx = center.getBlockX();
-        int cy = center.getBlockY();
-        int cz = center.getBlockZ();
-
-        /*
-        for (int y = 0; y < radius; y++) {
-            for (int z = 0; z < radius / 2; z++) {
-                for (int x = 0; x < radius / 2; x++) {
-                    Location t1 = center.clone().add(x, y, z);
-                    Location t2 = t1.clone().add(-radius, 0, 0);
-                    Location t3 = t1.clone().add(-radius, 0, -radius);
-                    Location t4 = t1.clone().add(0, 0, -radius);
-
-                    Material m = materialId;
-                    if (withDiamond && y == 0 && z == 0 && x == 0)
-                        m = Material.DIAMOND_BLOCK;
-
-                    t1.getBlock().setType(m);
-                    t2.getBlock().setType(m);
-                    t3.getBlock().setType(m);
-                    t4.getBlock().setType(m);
-                }
-            }
-        }*/
-
-        for (int y = -radius; y < radius; y++) {
-            for (int z = -radius; z < radius; z++) {
-                for (int x = -radius; x < radius; x++) {
-                    int bx = x + cx;
-                    int by = y + cy;
-                    int bz = z + cz;
-
-                    if (inRadius(cx, cy, cz, bx, by, bz, radius)) {
-                        Material m = materialId;
-                        if (withDiamond && y == 0 && z == 0 && x == 0)
-                            m = Material.DIAMOND_BLOCK;
-
-                        world.getBlockAt(bx, by, bz).setType(m);
-                    }
-                }
-            }
-        }
-
-        return new Vector(radius * 2, radius * 2, radius * 2);
+        world.getBlockAt(block.getX(), block.getY(), block.getZ()).setType(material);
     }
 }
