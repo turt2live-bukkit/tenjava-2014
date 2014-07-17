@@ -15,8 +15,9 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.populator;
+package com.turt2live.contest.tenjava.survive.populator.sphere;
 
+import com.turt2live.contest.tenjava.survive.populator.SpherePopulator;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,7 +48,7 @@ public class SphereAnimalPopulator extends SpherePopulator {
     /**
      * Creates a new sphere animal populator. The percent chance for this class is
      * used only if the sphere is a grass sphere. A 100% chance is actually passed
-     * to the underlying handler to unsure all grass spheres are parsed.
+     * to the underlying handler to ensure all grass spheres are parsed.
      *
      * @param chance the percentage chance this can take effect between 0 and 1
      */

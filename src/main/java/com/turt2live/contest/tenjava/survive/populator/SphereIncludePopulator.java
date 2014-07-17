@@ -18,6 +18,8 @@
 package com.turt2live.contest.tenjava.survive.populator;
 
 import com.turt2live.contest.tenjava.survive.StructureRepository;
+import com.turt2live.contest.tenjava.survive.populator.sphere.SphereAnimalPopulator;
+import com.turt2live.contest.tenjava.survive.populator.sphere.SphereSandPopulator;
 import com.turt2live.contest.tenjava.survive.structure.Sphere;
 import com.turt2live.contest.tenjava.survive.structure.Structure;
 import com.turt2live.contest.tenjava.survive.util.Point3D;
