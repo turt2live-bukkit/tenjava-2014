@@ -15,9 +15,9 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.structure;
+package com.turt2live.survive.structure;
 
-import com.turt2live.contest.tenjava.survive.util.Point3D;
+import com.turt2live.survive.util.Point3D;
 import org.bukkit.Material;
 import org.bukkit.World;
 

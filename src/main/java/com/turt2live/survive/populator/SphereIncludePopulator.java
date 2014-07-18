@@ -15,14 +15,14 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.populator;
+package com.turt2live.survive.populator;
 
-import com.turt2live.contest.tenjava.survive.StructureRepository;
-import com.turt2live.contest.tenjava.survive.populator.sphere.SphereAnimalPopulator;
-import com.turt2live.contest.tenjava.survive.populator.sphere.SphereSandPopulator;
-import com.turt2live.contest.tenjava.survive.structure.Sphere;
-import com.turt2live.contest.tenjava.survive.structure.Structure;
-import com.turt2live.contest.tenjava.survive.util.Point3D;
+import com.turt2live.survive.StructureRepository;
+import com.turt2live.survive.populator.sphere.SphereAnimalPopulator;
+import com.turt2live.survive.populator.sphere.SphereSandPopulator;
+import com.turt2live.survive.structure.Sphere;
+import com.turt2live.survive.structure.Structure;
+import com.turt2live.survive.util.Point3D;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;

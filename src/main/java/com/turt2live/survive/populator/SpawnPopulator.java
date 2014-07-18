@@ -1,4 +1,4 @@
-package com.turt2live.contest.tenjava.survive.populator;
+package com.turt2live.survive.populator;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;

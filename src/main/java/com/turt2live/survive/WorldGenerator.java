@@ -1,8 +1,9 @@
-package com.turt2live.contest.tenjava.survive;
+package com.turt2live.survive;
 
 import com.google.common.collect.ImmutableList;
-import com.turt2live.contest.tenjava.survive.populator.SpawnPopulator;
-import com.turt2live.contest.tenjava.survive.populator.SphereIncludePopulator;
+import com.turt2live.survive.populator.SpawnPopulator;
+import com.turt2live.survive.populator.SphereIncludePopulator;
+import com.turt2live.survive.structure.SchematicPopulator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -144,7 +145,8 @@ public class WorldGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return ImmutableList.<BlockPopulator>of(
                 new SpawnPopulator(spawnY),
-                new SphereIncludePopulator()
+                new SphereIncludePopulator(),
+                new SchematicPopulator()
         );
     }
 }

@@ -1,4 +1,4 @@
 name: SURVIVE
-main: com.turt2live.contest.tenjava.survive.Survive
+main: com.turt2live.survive.Survive
 version: '${project.version}'
 load: STARTUP

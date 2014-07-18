@@ -15,9 +15,9 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.structure;
+package com.turt2live.survive.structure;
 
-import com.turt2live.contest.tenjava.survive.util.Point3D;
+import com.turt2live.survive.util.Point3D;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
@@ -84,7 +84,7 @@ public abstract class Sphere implements Structure {
     }
 
     /**
-     * Runs the generation of the sphere, calling {@link #setBlock(com.turt2live.contest.tenjava.survive.util.Point3D, com.turt2live.contest.tenjava.survive.util.Point3D, int, boolean, org.bukkit.World)}
+     * Runs the generation of the sphere, calling {@link #setBlock(com.turt2live.survive.util.Point3D, com.turt2live.survive.util.Point3D, int, boolean, org.bukkit.World)}
      * where possible.
      *
      * @param radius the radius of the sphere. must be >0
@@ -118,7 +118,7 @@ public abstract class Sphere implements Structure {
     }
 
     /**
-     * Sets a block in the world. This should only be called by {@link #doGeneration(int, com.turt2live.contest.tenjava.survive.util.Point3D, org.bukkit.World)}
+     * Sets a block in the world. This should only be called by {@link #doGeneration(int, com.turt2live.survive.util.Point3D, org.bukkit.World)}
      * and therefore should have no null arguments.
      *
      * @param block    the block location to set

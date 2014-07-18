@@ -15,9 +15,9 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.populator;
+package com.turt2live.survive.populator;
 
-import com.turt2live.contest.tenjava.survive.Survive;
+import com.turt2live.survive.Survive;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;

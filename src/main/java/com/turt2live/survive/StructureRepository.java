@@ -15,11 +15,11 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive;
+package com.turt2live.survive;
 
-import com.turt2live.contest.tenjava.survive.structure.FilledSphere;
-import com.turt2live.contest.tenjava.survive.structure.RawMaterialSphere;
-import com.turt2live.contest.tenjava.survive.structure.Structure;
+import com.turt2live.survive.structure.FilledSphere;
+import com.turt2live.survive.structure.RawMaterialSphere;
+import com.turt2live.survive.structure.Structure;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.Random;
  *
  * @author turt2live
  */
-public class StructureRepository {
+public final class StructureRepository {
 
     private static List<Structure> STRUCTURES = new ArrayList<Structure>();
 

@@ -15,7 +15,7 @@
  * License along with this software; If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-package com.turt2live.contest.tenjava.survive.util;
+package com.turt2live.survive.util;
 
 /**
  * Represents a point in 3D space

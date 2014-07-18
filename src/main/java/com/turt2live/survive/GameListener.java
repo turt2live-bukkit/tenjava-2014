@@ -1,4 +1,4 @@
-package com.turt2live.contest.tenjava.survive;
+package com.turt2live.survive;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
